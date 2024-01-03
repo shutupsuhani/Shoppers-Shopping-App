@@ -1,4 +1,5 @@
 import  { useState, useEffect } from 'react';
+import {Link} from "react-router-dom"
 import 'tailwindcss/tailwind.css';
 
 
@@ -29,10 +30,11 @@ const Topbar = () => {
       <a href="/" className="text-2xl ml-4 font-bold text-blue-600">Shoppers</a>
       </div> 
 
+
       <ul className={`hidden md:flex items-center space-x-6 ${isScrolled ? 'opacity-0' : ''}`}>
-        <li><a href="/" className="text-blue-600 hover:text-gray-300">Home</a></li>
-        <li><a href="/" className="text-blue-600 hover:text-gray-300">About</a></li>
-        <li><a href="/" className="text-blue-600 hover:text-gray-300">Cart</a></li>
+        <li><Link to="/" className="text-blue-600 hover:text-slate-600">Home</Link></li>
+        <li><Link to="/login" className="text-blue-600 hover:text-slate-600">Login</Link></li>
+        <li><Link to="/cart" className="text-blue-600 hover:text-slate-600">Cart</Link></li>
       </ul>
     </nav>
  );
