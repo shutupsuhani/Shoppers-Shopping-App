@@ -1,26 +1,14 @@
-//home.jsx
-
-import { useEffect,useState } from 'react';
-import Topbar from '../components/Topbar'
-import Cart from '../pages/Cart'; 
-
-
-const generatePlaceholderImage = (width, height, category, seed) => {
-  return `https://lorempixel.com/${width}/${height}/${category}/${seed}`;
-};
+import React, { useEffect, useState } from 'react';
+import Topbar from '../components/Topbar';
+import Cart from '../pages/Cart';
+import {Link} from 'react-router-dom'
 
 function Home() {
-  
-  /*const dummyProducts = [
-    { id: 1, name: 'Product A', price: 29.99 },
-    { id: 2, name: 'Product B', price: 49.99 },
-    { id: 3, name: 'Product C', price: 19.99 },
-    { id: 4, name: 'Product D', price: 39.99 },
-    // Add more dummy products as needed
-  ];*/
-
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -36,64 +24,91 @@ function Home() {
     fetchProducts();
   }, []);
 
- /* const addToCart = (product) => {
-    setCartItems((prevCartItems) => {
-      const newCartItems = [...prevCartItems, { ...product }];
-      console.log('New Cart Items:', newCartItems);
-      return newCartItems;
-    });
-  }; */
+
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      setCartItems(JSON.parse(storedCartItems));
+    }
+  }, []);
+  
 
   const addToCart = (product) => {
     setCartItems((prevCartItems) => {
       const newCartItems = [...prevCartItems, { ...product }];
-      console.log('New Cart Items:', newCartItems);
+      console.log(product)
+      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
       return newCartItems;
     });
   };
   
-  
-  
+
+  const filterProducts = (product) => {
+    return (
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      product.price >= minPrice &&
+      product.price <= maxPrice
+    );
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleMinPriceChange = (e) => {
+    setMinPrice(parseInt(e.target.value, 10));
+  };
+
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(parseInt(e.target.value, 10));
+  };
 
   return (
     <>
-    
-    <Topbar/>
-    <div className='w-full h-screen bg-gray-300'>
-
-    <div className="container mx-auto my-8">
-      <h1 className="text-4xl font-bold mb-8 text-blue-700">Product List</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <div key={product.id} className="bg-white p-4 rounded shadow">
-            {/* Display product image */}
-            <img
-              src={product.image}
-              alt={product.title}
-              className="mb-4 rounded"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-
-            <h2 className="text-lg font-semibold mb-2">{product.title}</h2>
-            <p className="text-gray-600 mb-4">${product.price}</p>
-            <button onClick={() => addToCart(product)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-300">
-              Add to Cart
-            </button>
+      <Topbar cartItems={cartItems} />
+      <div className='w-full h-screen bg-gray-300'>
+        <div className="container mx-auto my-8">
+          <div className="flex flex-col items-center mb-6">
+            
+          <input type="text" value={searchQuery} onChange={handleSearchChange}  placeholder="🔍 Search products" className="w-50% px-4 mt-8 mb-5 py-2 border rounded focus:outline-none focus:border-none" />
+            
+            <h1 className="text-4xl font-bold text-blue-700 mb-2">Product List</h1>
+            
           </div>
-        ))}
+
+          <div className="mb-4">
+            <label className="mr-2">Min Price:</label>
+            <input type="number" value={minPrice} onChange={handleMinPriceChange} className="mr-2 w-20 rounded-md" />
+            <label className="mr-2 ">Max Price:</label>
+            <input type="number" value={maxPrice} onChange={handleMaxPriceChange} className="w-20 rounded-md" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {products.filter(filterProducts).map((product) => (
+              <div key={product.id} className="bg-white p-4 rounded shadow-lg">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="mb-4 rounded w-50% h-50%"
+                  
+                />
+                <h2 className="text-lg font-semibold mb-2">{product.title}</h2>
+                <p className="text-gray-600 mb-4">${product.price}</p>
+               <Link to='/cart'><button
+                  onClick={() => addToCart(product)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-300"
+                >
+                  Add to Cart
+                </button></Link> 
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
 
-
-    </div>
-
-
-    
-    <Cart cartItems={cartItems} />
-    
-    </>  
-  ) 
+   
+    </>
+  );
 }
 
-export default Home
+export default Home;

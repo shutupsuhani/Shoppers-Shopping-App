@@ -1,8 +1,9 @@
+//login.jsx
 import Topbar from '../components/Topbar';
 import { useState } from 'react';
-import {useHistory} from 'react-router-dom';
-const Login = ({ onLogin }) => {
-  const history = useHistory();
+
+  
+  const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userToken, setUserToken] = useState(null);
@@ -35,23 +36,13 @@ const Login = ({ onLogin }) => {
         console.log('Login successful. User data:', userData);
         alert('sucessfully Login');
         console.log('User token:', receivedToken);
-
+      
         // Save the token in the local state
         setUserToken(receivedToken);
 
         // Inform the parent component about the successful login
         onLogin(receivedToken);
 
-          // Log before redirect
-        console.log('Before redirect');
-
-          // Redirect to the home page
-        history.push('/');
-
-        console.log("after redirect")
-
-
-         
       } else {
         console.error('Login failed. Status:', response.status);
       }
