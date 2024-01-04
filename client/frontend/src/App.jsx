@@ -7,21 +7,21 @@ import Cart from './pages/Cart'
 
 const router=createBrowserRouter([
   {
-      path:"/",
+      path:"/login",
+      element:<Login></Login>
+  },
+
+  {
+    path:"/",
       element:<Home></Home>
-  },
-
-  {
-    path:"/login",
-    element:<Login></Login>
 
   },
 
   {
-    path:"/cart",
-    element:<Cart></Cart>
-
-  },
+      path:"/cart",
+      element:<Cart></Cart>
+       
+  }
 
 
 ])

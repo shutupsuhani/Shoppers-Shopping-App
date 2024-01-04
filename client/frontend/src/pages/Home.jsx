@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Topbar from '../components/Topbar';
 import Cart from '../pages/Cart';
-import {Link} from 'react-router-dom'
+
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -94,12 +94,12 @@ function Home() {
                 />
                 <h2 className="text-lg font-semibold mb-2">{product.title}</h2>
                 <p className="text-gray-600 mb-4">${product.price}</p>
-               <Link to='/cart'><button
+              <button
                   onClick={() => addToCart(product)}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-300"
                 >
                   Add to Cart
-                </button></Link> 
+                </button>
               </div>
             ))}
           </div>
