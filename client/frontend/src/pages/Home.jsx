@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Topbar from '../components/Topbar';
 import Cart from '../pages/Cart';
+import Footer from '../components/footer';
 
 
 function Home() {
@@ -106,7 +107,7 @@ function Home() {
         </div>
       </div>
 
-   
+     <Footer/>
     </>
   );
 }

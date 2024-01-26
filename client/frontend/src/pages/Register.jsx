@@ -1,7 +1,50 @@
+import { useState,useEffect } from 'react';
 import Topbar from '../components/Topbar'
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Register = () => {
-  return (
+    
+    const [username,setUsername]=useState('')
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('');
+    const [confirmpassword,setConfirmPassword]=useState('');
+    const [registeredUsers, setRegisteredUsers] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate=useNavigate(); 
+
+    useEffect(() => {
+        const storedUsers = localStorage.getItem('registeredUsers');
+        if (storedUsers) {
+          setRegisteredUsers(JSON.parse(storedUsers));
+        }
+      }, []);
+      const handleRegister = (e) => {
+        e.preventDefault();
+
+        const isUserTaken = registeredUsers.some(
+          (user) => user.username === username || user.email === email
+        );
+    
+        if (!isUserTaken) {
+          setRegisteredUsers((prevUsers) => [...prevUsers, { username, email, password }]);
+          
+          localStorage.setItem('registeredUsers', JSON.stringify([...registeredUsers, { username, email, password } ]));
+          setErrorMessage('');
+          toast.success('Registered successfully');
+          navigate("/home")
+        } else {
+          setErrorMessage('Username or email already taken');
+    
+          toast.error('Registration failed. Username or email already taken.');
+        }
+      };
+  
+    return (
+
+    
    
     <>
      <Topbar/>
@@ -14,39 +57,40 @@ const Register = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign up
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              {errorMessage && <p className='text-red-600'>{errorMessage}</p>}
+              <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
                   
                   <div>
-                      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Name</label>
-                      <input type="name" name="Name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your Name" required="true"/>
+                      <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Name</label>
+                      <input type="text" placeholder="enter username" id="username" value={username} onChange={(e)=>setUsername(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required="true"/>
                    </div>
                   
                   
                   
                   <div>
                       <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Your Email</label>
-                      <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="true"/>
+                      <input type="email" placeholder="enter your email-address" value={email} onChange={(e)=>setEmail(e.target.value)} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required="true"/>
                   </div>
 
                   <div>
                       <label htmlFor="password" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                      <input type="password" name="password" id="password" placeholder="Enter 6 digit pin" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="true"/>
+                      <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} id="password" placeholder="Enter 6 digit pin" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="true"/>
                   </div>
 
                   <div>
                       <label htmlFor="confirmpassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Confirm Password</label>
-                      <input type="password" name="confirmpassword" id="confirmpassword" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Confirm Your Password" required="true"/>
+                      <input type="password" placeholder="enter confirm password" value={confirmpassword} onChange={(e)=>setConfirmPassword(e.target.value)} id="confirmpassword" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="true"/>
                   </div>
                   
                   <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-200 hover:text-blue-700   focus:ring-2 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign up</button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                      Already Registered? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in</a>
+                      Already Registered?<Link to="/login"><a  className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in</a></Link>
                   </p>
               </form>
           </div>
       </div>
 
-
+     <ToastContainer/>
      </div>
     
     </>
