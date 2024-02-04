@@ -5,7 +5,7 @@ A Web Application Named as "🛒Shoppers"
 
 
 hosted on netlify 
-🔗:https://shoppers-bwi-assignment.netlify.app/
+🔗:https://shoppers-shoppingapp.netlify.app/
 
 
 Tech Stacks Used:Vite React , Tailwind CSS
