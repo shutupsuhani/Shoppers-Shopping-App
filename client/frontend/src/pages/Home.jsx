@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import './image.css';
+import { ToastContainer, toast } from 'react-toastify';
+import '../components/ReactToastify.css';
+
 
 function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,6 +17,8 @@ function Home() {
 
     return () => clearInterval(interval);
   }, []);
+
+  
 
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
@@ -49,6 +54,8 @@ function Home() {
     setCartItems((prevCartItems) => {
       const newCartItems = [...prevCartItems, { ...product }];
       console.log(product)
+      toast.success(`🎉Succesfully added to cart 🛒`);
+      
       localStorage.setItem('cartItems', JSON.stringify(newCartItems));
       return newCartItems;
     });
@@ -103,16 +110,16 @@ function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  gap-4  ">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="bg-white p-4 rounded shadow-lg">
+              <div key={product.id} className="bg-white hover:bg-pink-50 hover:text-gray-600 transition ease-linear hover:translate-x-1 hover:translate-y-1 p-4 rounded shadow-lg">
                 <img
                   src={product.image}
                   alt={product.title}
                   className="mb-4 rounded w-48 h-48 items-center m-auto"
                 />
                 <h2 className="text-lg font-mono font-semibold mb-2">{product.title}</h2>
-                <p className="text-gray-600 font-mono mb-4">${product.price}</p>
+                <p className=" font-mono mb-4 ">${product.price}</p>
                 <button
                   onClick={() => addToCart(product)}
                   className="bg-gradient-to-r from-purple-500  to-pink-500 hover:text-black text-white py-2 px-4 rounded-md "
@@ -123,6 +130,8 @@ function Home() {
             ))}
           </div>
         </div>
+        
+        <ToastContainer/>
         <Footer />
       </div>
     </>
