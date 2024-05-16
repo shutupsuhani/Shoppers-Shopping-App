@@ -1,4 +1,4 @@
-# buildwithinnovation_internship_assignment
+# Shoppers Shopping App
 
 
 A Web Application Named as "🛒Shoppers"
