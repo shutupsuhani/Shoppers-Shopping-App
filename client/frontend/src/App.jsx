@@ -2,10 +2,10 @@
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import Login from './pages/Login'
 import Home from './pages/Home'
-
-
+import Cart from './pages/Cart/Cart';
 import Register from './pages/Register';
-import Cart from './pages/Cart';
+import { CartProvider } from './Context/CartContext';
+import { ProductProvider } from './Context/ProductContext';
 
 
  const router=createBrowserRouter([
@@ -44,11 +44,14 @@ import Cart from './pages/Cart';
 
 export default function App() {
   return (
-
-
-    <main>
-        <RouterProvider router={router}></RouterProvider>
-    </main>
+    <ProductProvider>
+    <CartProvider>
+      <main>
+        <RouterProvider router={router} />
+      </main>
+    </CartProvider>
+  </ProductProvider>
+   
   )
 }  
 

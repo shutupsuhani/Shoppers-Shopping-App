@@ -4,7 +4,7 @@ import 'tailwindcss/tailwind.css';
 
 const Topbar = ({ cartItems = [] }) => {
   const cartItemCount = cartItems.length;
-  const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+  
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -27,17 +27,17 @@ const Topbar = ({ cartItems = [] }) => {
       </div>
 
       <div className='flex items-center'>
-        <Link to="/"><img src="../assets/home3.png" className='h-7 w-7 lg:mr-2 rounded-full' /></Link>
+        <Link to="/home"><img src="../assets/home3.png" className='h-7 w-7 lg:mr-2 rounded-full' /></Link>
         <Link to="/login"><img src="../assets/profile3.png" className='h-7 w-7 rounded-full lg:mr-2' /></Link>
         <div className="relative">
-          <img src="../assets/cart3.png" alt='Cart' className='w-7 h-7 rounded-full' />
+         <Link to='/cart'><img src="../assets/cart3.png" alt='Cart' className='w-7 h-7 rounded-full' /> </Link>
           {cartItemCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-pink-600 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
               {cartItemCount}
             </span>
           )}
         </div>
-        <span className="ml-2 lg:mr-2 text-pink-600 font-mono font-semibold hidden lg:inline">Total: ${totalAmount.toFixed(2)}</span>
+        
       </div>
     </nav>
   );
