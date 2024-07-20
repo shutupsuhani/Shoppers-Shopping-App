@@ -1,41 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import "./login.css";
 import { motion } from "framer-motion";
-import "./login.css"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [registeredUsers, setRegisteredUsers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedUsers = localStorage.getItem("registeredUsers");
-
-    if (storedUsers) {
-      setRegisteredUsers(JSON.parse(storedUsers));
-    }
-  }, []);
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const user = registeredUsers.find((user) => user.username === username);
-
-    if (user && user.password === password) {
-      // Successful login
-      toast.success(`Welcome back, ${user.username}!`);
-
-      setErrorMessage(""); // Clear any previous error message
-
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      toast.success(`Welcome back, ${user.email}!`);
+      console.log(user.email)
+      setErrorMessage("");
       navigate("/home");
-    } else {
-      // Failed login
-      setErrorMessage("Invalid username or password");
-      toast.error("Login failed. Invalid username or password.");
+    } catch (error) {
+      console.error("Error during login:", error);
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
+      toast.error(`Login failed: ${errorMessage}`);
     }
   };
 
@@ -46,15 +38,10 @@ const Login = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        {/* Left Section */}
-        <div className="left-section">
-          <div className="font-bold">
-           
-          </div>
-        </div>
-        {/* Right Section */}
         <div className="right-section flex bg-white rounded-md">
-          <div className="banner rounded-lg" ><img src="./assets/Login.png"  className="rounded-md md:max-w-md h-auto mt-2 ml-2"/></div>
+          <div className="banner rounded-lg">
+            <img src="./assets/Login.png" className="rounded-md md:max-w-md h-auto mt-2 ml-2" />
+          </div>
           <div className="w-full bg-white rounded-lg shadow md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-mono text-center font-bold leading-tight tracking-tight text-pink-500 md:text-2xl dark:text-white">
@@ -66,19 +53,19 @@ const Login = () => {
               <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label
-                    htmlFor="username"
+                    htmlFor="email"
                     className="block mb-2 text-md font-medium text-gray-900 dark:text-white text-left"
                   >
-                    Username
+                    Email
                   </label>
                   <input
-                    type="text"
-                    placeholder="enter your username"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="email"
+                    placeholder="Enter your email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
+                    required
                   />
                 </div>
                 <div>
@@ -96,28 +83,24 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter Password"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
+                    required
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required={true}
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label
-                        htmlFor="remember"
-                        className="text-gray-500 dark:text-gray-300"
-                      >
-                        Remember me
-                      </label>
-                    </div>
+                  <div className="flex items-center h-5">
+                    <input
+                      id="remember"
+                      aria-describedby="remember"
+                      type="checkbox"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      required
+                    />
+                    <label
+                      htmlFor="remember"
+                      className="ml-3 text-sm text-gray-500 dark:text-gray-300"
+                    >
+                      Remember me
+                    </label>
                   </div>
                   <a
                     href="#"
@@ -132,7 +115,6 @@ const Login = () => {
                 >
                   Sign in
                 </button>
-                
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet? <Link to="/register">Sign up</Link>
                 </p>
