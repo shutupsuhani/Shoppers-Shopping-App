@@ -1,5 +1,5 @@
-import  { createContext, useState, useEffect, useContext } from 'react';
-import { auth } from '../firebase'; // Adjust the import path as necessary
+import { createContext, useState, useEffect, useContext } from "react";
+import { auth } from "../firebase"; // Adjust the import path as necessary
 
 const AuthContext = createContext();
 
@@ -17,7 +17,11 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Optionally, show a loading spinner or placeholder
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img src="./assets/loading.gif" alt="Loading..." />
+      </div>
+    );
   }
 
   return (

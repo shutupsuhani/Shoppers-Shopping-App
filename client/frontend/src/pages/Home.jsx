@@ -107,13 +107,13 @@ const Home = () => {
             </div>
           ) : (
             <>
-              <div className="mt-20 mb-4 relative">
+              <div className="mt-20 mb-4 ">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={handleSearchChange}
                   placeholder=" Search products"
-                  className="w-full md:w-1/3 font-mono p-2 border mr-3 border-gray-300 rounded ml-3"
+                  className="w-full md:w-4/5 mx-auto font-mono p-2 border mr-3  border-gray-300 rounded ml-3"
                 />
                 {suggestions.length > 0 && (
                   <ul className="absolute bg-white border border-gray-300 w-full mt-1 rounded shadow-lg z-10">

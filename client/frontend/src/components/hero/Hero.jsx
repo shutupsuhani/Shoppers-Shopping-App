@@ -29,7 +29,7 @@ const Hero = () => {
           Elevate Your Shopping Experience Today!
         </h1>
         
-        <button id="explore-btn" className="border-2 border-white md:text-md text-sm mt-4 px-4 py-2 font-serif text-black bg-white hover:bg-black hover:text-white transition duration-300">
+        <button id="explore-btn" className="border-2 relative border-white md:text-md text-sm mt-4 px-4 py-2 font-serif text-black bg-white hover:bg-black hover:text-white transition duration-300">
           Explore Now
         </button>
         
