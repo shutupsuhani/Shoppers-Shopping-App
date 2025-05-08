@@ -11,8 +11,6 @@ docker pull shutupsuhani/my-react-app
 2. Run the Docker Container
 Run the container and access the app at http://localhost:8080:
 
-bash
-Copy
-Edit
-docker run -p 8080:8080 shutupsuhani/my-react-app
+
+3. docker run -p 8080:8080 shutupsuhani/my-react-app
 
