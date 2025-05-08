@@ -1,5 +1,8 @@
-Run it in your system using Docker Hub
+## 🚀 How to Run the App
 
-Step 1 : docker pull shutupsuhani/my-react-app
+### 1. **Pull the Docker Image**
 
-Step 2: docker run -p 8080:8080 shutupsuhani/my-react-app
+To get the image from Docker Hub, run the following command:
+
+```bash
+docker pull shutupsuhani/my-react-app
